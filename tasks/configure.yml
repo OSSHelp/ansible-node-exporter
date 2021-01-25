@@ -1,0 +1,10 @@
+---
+
+- name: create exporter configuration file
+  template:
+    src: exporter-cfg.j2
+    dest: "{{ node_exporter_dirs.config_dir }}/{{ node_exporter_config_file }}"
+    owner: root
+    group: "{{ node_exporter_user_name }}"
+    mode: 0640
+  notify: restart node_exporter service

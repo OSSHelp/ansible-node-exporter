@@ -1,0 +1,1 @@
+OPTIONS="--collector.disable-defaults{% for key, value in node_exporter_params.items()|sort %} --{{ key }}={{ value }}{% endfor %}{% for item in node_exporter_enabled_collectors|sort %} --collector.{{ item }}{% endfor %}"
