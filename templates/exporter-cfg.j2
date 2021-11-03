@@ -1,1 +1,12 @@
-OPTIONS="--collector.disable-defaults{% for key, value in node_exporter_params.items()|sort %} --{{ key }}={{ value }}{% endfor %}{% for item in node_exporter_enabled_collectors|sort %} --collector.{{ item }}{% endfor %}"
+OPTIONS="--collector.disable-defaults
+{%- for key, value in node_exporter_params.items()|sort %}
+ --{{ key }}={{ value }}
+{%- endfor %}
+{%- if node_exporter_collect_nvme_metrics or 'textfile' in node_exporter_enabled_collectors %}
+ --collector.textfile --collector.textfile.directory={{ node_exporter_dirs.textfile_collector_dir }}
+{%- endif %}
+{%- for item in node_exporter_enabled_collectors|sort %}
+{%- if item != 'textfile' %}
+ --collector.{{ item }}
+{%- endif %}
+{%- endfor %}"

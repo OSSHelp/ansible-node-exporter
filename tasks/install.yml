@@ -38,6 +38,10 @@
         state: absent
   when: not binary_file.stat.exists
 
+- name: include tasks for nvme metrics collection
+  include_tasks: nvme.yml
+  when: node_exporter_collect_nvme_metrics
+
 - name: create systemd unit
   template:
     src: systemd-unit.j2
@@ -50,6 +54,15 @@
   file:
     path: "{{ node_exporter_dirs.config_dir }}"
     state: directory
+
+- name: prepare directory for textfile collector
+  file:
+    path: "{{ node_exporter_dirs.textfile_collector_dir }}"
+    state: directory
+    owner: "root"
+    group: "{{ node_exporter_user_name }}"
+    mode: '0750'
+  when: node_exporter_collect_nvme_metrics or 'textfile' in node_exporter_enabled_collectors
 
 - name: create exporter configuration file
   template:

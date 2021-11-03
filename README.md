@@ -25,6 +25,7 @@ Supported collectors list with description is available below.
 | -------- | -------- | -------- |
 | `node_exporter_setup` | `full` | Setup mode. See [OSSHelp KB article](https://oss.help/kb4895) |
 | `node_exporter_enabled_collectors` | `[]` | Array to enable collectors. By default the role disables all. |
+| `node_exporter_collect_nvme_metrics` | `false` | If set to `true` - enables textfile collector and places special script for collecting NVMe S.M.A.R.T. metrics with it. |
 
 ### Available collectors
 
@@ -60,7 +61,7 @@ List and description of available collectors.
 | `sockstat` | Exposes various statistics from `/proc/net/sockstat`. |
 | `softnet` | Exposes statistics from `/proc/net/softnet_stat`. |
 | `stat` | Exposes various statistics from `/proc/stat`. This includes boot time, forks and interrupts. |
-| `textfile` | Exposes statistics read from local disk. The `--collector.textfile.directory` flag must be set. Not supported by this role so far! |
+| `textfile` | Exposes statistics read from local disk. |
 | `thermal_zone` | Exposes thermal zone & cooling device statistics from `/sys/class/thermal`. |
 | `time` | Exposes the current system time. |
 | `timex` | Exposes selected adjtimex(2) system call stats. |

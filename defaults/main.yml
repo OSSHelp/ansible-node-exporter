@@ -14,8 +14,11 @@ node_exporter_systemd_unit: "/etc/systemd/system/{{ node_exporter_service_name }
 node_exporter_dirs:
   binary_dir: /usr/local/bin
   config_dir: /usr/local/etc/node_exporter
+  textfile_collector_dir: '/var/lib/node_exporter/textfile_collector'
 
 node_exporter_params:
   web.listen-address: ':9100'
 
+node_exporter_collect_nvme_metrics: false
+node_exporter_nvme_collector_path: '/usr/local/sbin/custom.nvme-metrics-collector.py'
 node_exporter_enabled_collectors: []

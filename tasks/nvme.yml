@@ -1,0 +1,26 @@
+---
+
+- name: install needed packages
+  apt:
+    name:
+      - nvme-cli
+      - pciutils
+      - cron
+    state: present
+
+- name: prepare NVMe metrics collector
+  copy:
+    src: templates/nvme-metrics-collector.j2
+    dest: "{{ node_exporter_nvme_collector_path }}"
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: add cronjob for metrics collector
+  cron:
+    name: NVMe metrics collector for node-exporter
+    minute: "*"
+    hour: "*"
+    user: root
+    job: '{{ node_exporter_nvme_collector_path }} -o prometheus > {{ node_exporter_dirs.textfile_collector_dir }}/nvme.prom.new && mv {{ node_exporter_dirs.textfile_collector_dir }}/nvme.prom.new {{ node_exporter_dirs.textfile_collector_dir }}/nvme.prom'  # noqa 204
+    cron_file: osshelp
