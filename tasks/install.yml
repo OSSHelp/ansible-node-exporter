@@ -36,11 +36,11 @@
       file:
         path: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
         state: absent
-  when: not binary_file.stat.exists
+  when: not binary_file.stat.exists and not ansible_check_mode
 
 - name: include tasks for nvme metrics collection
   include_tasks: nvme.yml
-  when: node_exporter_collect_nvme_metrics
+  when: node_exporter_collect_nvme_metrics and not ansible_check_mode
 
 - name: create systemd unit
   template:
@@ -62,7 +62,9 @@
     owner: "root"
     group: "{{ node_exporter_user_name }}"
     mode: '0750'
-  when: node_exporter_collect_nvme_metrics or 'textfile' in node_exporter_enabled_collectors
+  when: (node_exporter_collect_nvme_metrics
+        or 'textfile' in node_exporter_enabled_collectors)
+        and not ansible_check_mode
 
 - name: create exporter configuration file
   template:
